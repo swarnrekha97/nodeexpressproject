@@ -1,0 +1,92 @@
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script>
+            $(document).ready(function(){
+                $.get('http://localhost:3009/students',function(data,status){
+                   //var datapared=JSON.parse(data);
+                   var table_html = '';
+                    for(var i=0;i<data.length;i++){
+                      
+
+                         //create html table row
+                             table_html += '<tr id='+data[i].Id+'>';
+                                table_html += '<td><input type=\'text\' id=\''+data[i].Id+'_id\' value=\''+data[i].Id+'\' disabled="disabled" /></td>';
+                                table_html += '<td><input type=\'text\' id=\''+data[i].Id+'_name\' value=\''+data[i].studentName+'\' disabled="disabled" /></td>';
+                                table_html += '<td><input id=\''+data[i].Id+'\'  type=\'button\' name=\''+data[i].Id+'_Edit\' onclick=\'editStudent(this)\' value=\'Edit\'/></td>';
+                                table_html += '<td><input id=\''+data[i].Id+'\' type=\'button\' name=\''+data[i].Id+'_Delete\' onclick=\'deleteStudent(this)\' value=\'Delete\' /></td>';
+                                table_html += '<td><input id=\''+data[i].Id+'_Update\' type=\'button\' name=\''+data[i].Id+'\' onclick=\'updateStudent(this)\' value=\'Update\' disabled="disabled"/></td>';
+                            table_html += '</tr>'
+                        }
+                    $( "#studentsTable" ).append(  table_html );
+                  
+                });
+            });
+
+            function editStudent(row){
+                var url='http://localhost:3009/edit/'+row.id;
+                console.log(url);
+                $.get(url,function(data,status){
+                   //var datapared=JSON.parse(data);
+                   console.log(status);
+                   
+                   var selid=data.Id;
+                   if(status=='success'){
+                    document.getElementById(selid+'_id').disabled = false;
+                    document.getElementById(selid+'_name').disabled = false;
+                    document.getElementById(selid+'_Update').disabled=false;
+                 
+               
+
+                   }                  
+                });
+            }
+
+            function deleteStudent(row){
+                var url='http://localhost:3009/delete/'+row.id;
+                console.log(url);
+                $.get(url,function(data,status){
+                   //var datapared=JSON.parse(data);
+                   console.log(data);    
+                   window.location.reload();              
+                });
+            }
+
+            function updateStudent(row){
+                console.log('update student='+row.name);
+                var editid= document.getElementById(row.name+'_id').value;
+                var editname= document.getElementById(row.name+'_name').value;
+                var urlnew='http://localhost:3009/edit/'+editid+'/'+editname+'/'+row.name;
+                console.log(urlnew);
+              
+                $.get(urlnew,function(data,status){
+
+                console.log(status);
+                window.location.reload();
+                });
+
+            }
+
+
+
+        </script>
+    </head>
+    <body style="align-items: center;">
+        <h1>
+            Welcome to Student Management System
+        </h1>
+        <table id="studentsTable" style="border-style: dashed;">
+            <thead style="animation: alternate;">
+                <tr><th>Sudent ID</th>
+                <th>Student Name</th>
+                <th>Edit</th>
+                <th>Delete</th>
+                <th>Update</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </body>
+</html>
