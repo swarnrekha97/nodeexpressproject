@@ -15,5 +15,9 @@
     "jade": "^1.11.0",
     "mongodb": "^3.5.9",
     "mysql": "^2.18.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/swarnrekha97/nodeexpressproject.git"
+}
 }
